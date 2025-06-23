@@ -26,7 +26,7 @@ if uploaded_file is not None:
         st.success(f"File loaded successfully! Shape: {df.shape[0]} rows × {df.shape[1]} columns")
         st.dataframe(df.head())
 
-        # Grafik ve analiz başlıkları
+        
         charts = []
 
         for func in [
@@ -63,21 +63,21 @@ if uploaded_file is not None:
                         st.markdown(f"**{explanation}**")
                         st.pyplot(fig)
 
-        # Smart Insights
+        
         insights = generate_smart_insights(df)
         if insights:
             st.markdown("### 🔍 Smart Insights")
             for item in insights:
                 st.info(item)
 
-        # Outlier Detection
+        
         outlier_info = detect_outliers(df)
         if outlier_info:
             st.markdown("### 🚨 Outlier Detection")
             for line in outlier_info:
                 st.warning(line)
 
-        # PDF Report Generation
+        
         if st.button("📄 Generate PDF Report"):
             with st.spinner("Creating PDF report..."):
                 report_path = f"reports/report_{uuid.uuid4().hex}.pdf"
