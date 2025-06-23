@@ -13,12 +13,12 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import mean_squared_error, accuracy_score
 from scipy.stats import zscore
 
-# Grafik kayıt fonksiyonu
+
 def save_plot(fig, path):
     fig.savefig(path, bbox_inches='tight')
 
 
-# Eksik verileri analiz et
+
 def analyze_missing_data(df):
     missing = df.isnull().sum()
     if missing.sum() == 0:
@@ -42,7 +42,7 @@ def plot_missing_heatmap(df):
     return (title, explanation, fig)
 
 
-# Zaman serisi trend analizi
+
 def analyze_trends(df):
     date_cols = df.select_dtypes(include=['datetime64', 'object']).columns
     for col in date_cols:
@@ -62,7 +62,7 @@ def analyze_trends(df):
     return None
 
 
-# Kategorik analiz
+
 def analyze_categorical(df):
     figures = []
     cat_cols = df.select_dtypes(include=['object', 'category']).columns
@@ -90,7 +90,7 @@ def analyze_value_counts(df):
     return figures
 
 
-# Sayısal dağılım
+
 def analyze_numeric_distributions(df):
     figures = []
     num_cols = df.select_dtypes(include=np.number).columns
@@ -104,7 +104,7 @@ def analyze_numeric_distributions(df):
     return figures
 
 
-# Boxplot
+
 def analyze_boxplots(df):
     figures = []
     for col in df.select_dtypes(include=np.number).columns:
@@ -117,7 +117,7 @@ def analyze_boxplots(df):
     return figures
 
 
-# Korelasyon matrisi
+
 def analyze_correlations(df):
     corr = df.select_dtypes(include=np.number).corr()
     if corr.empty:
@@ -130,7 +130,7 @@ def analyze_correlations(df):
     return (title, explanation, fig)
 
 
-# Skewness-Kurtosis
+
 def analyze_skew_kurt(df):
     num = df.select_dtypes(include=np.number)
     return pd.DataFrame({
@@ -139,7 +139,7 @@ def analyze_skew_kurt(df):
     })
 
 
-# Aykırı değer tespiti
+
 def detect_outliers(df):
     outliers = {}
     for col in df.select_dtypes(include=np.number).columns:
@@ -154,7 +154,7 @@ def detect_outliers(df):
     return pd.DataFrame.from_dict(outliers, orient='index', columns=['Outlier Count'])
 
 
-# Anomali (Z-score)
+
 def detect_anomalies(df):
     from scipy.stats import zscore
     numeric = df.select_dtypes(include=np.number)
@@ -163,7 +163,7 @@ def detect_anomalies(df):
     return df[anomaly]
 
 
-# Text column analiz
+
 def analyze_text_columns(df):
     result = {}
     for col in df.select_dtypes(include='object'):
@@ -181,7 +181,7 @@ def analyze_text_columns(df):
     return result
 
 
-# PCA görselleştirme
+
 def analyze_pca(df):
     numeric = df.select_dtypes(include=np.number).dropna()
     if numeric.shape[1] < 2:
@@ -198,7 +198,7 @@ def analyze_pca(df):
     return (title, explanation, fig)
 
 
-# Scatter Matrix (pairplot alternatifi)
+
 def analyze_scatter_matrix(df):
     numeric = df.select_dtypes(include=np.number)
     if numeric.shape[1] < 2:
@@ -209,7 +209,7 @@ def analyze_scatter_matrix(df):
     return (title, explanation, plt.gcf())
 
 
-# PDF oluşturucu sınıf
+
 class PDF(FPDF):
     def header(self):
         self.set_font("Arial", 'B', 16)
@@ -235,13 +235,12 @@ def generate_pdf_report(df, chart_paths, output_file):
 
 def generate_smart_insights(df):
     insights = []
-    # Eksik veri oranı
     missing_ratio = df.isnull().mean()
     high_missing = missing_ratio[missing_ratio > 0.5]
     if not high_missing.empty:
         insights.append(f"⚠️ High missing data in: {', '.join(high_missing.index)}")
 
-    # Çok yüksek korelasyonlar
+    
     numeric_df = df.select_dtypes(include=[np.number])
     if numeric_df.shape[1] >= 2:
         corr_matrix = numeric_df.corr().abs()
@@ -251,7 +250,7 @@ def generate_smart_insights(df):
             col1, col2 = np.unravel_index(np.argmax(corr_matrix.values), corr_matrix.shape)
             insights.append(f"📌 Strong correlation between: {corr_matrix.columns[col1]} and {corr_matrix.columns[col2]} (r={max_corr:.2f})")
 
-    # Yinelenen satırlar
+   
     if df.duplicated().sum() > 0:
         insights.append(f"♻️ Duplicate rows detected: {df.duplicated().sum()}")
 
@@ -274,7 +273,7 @@ def get_feature_importance(df, target_col):
     X = df.drop(columns=[target_col])
     y = df[target_col]
 
-    # Encode categoricals
+    
     X = X.copy()
     for col in X.select_dtypes(include='object').columns:
         X[col] = LabelEncoder().fit_transform(X[col])
@@ -292,7 +291,7 @@ def predict_from_input(df, target_col, input_dict):
     X = df.drop(columns=[target_col])
     y = df[target_col]
 
-    # Encode categoricals
+    
     X = X.copy()
     label_encoders = {}
     for col in X.select_dtypes(include='object').columns:
