@@ -26,17 +26,7 @@ Smart Data Analyzer offers a robust set of features to make data exploration eff
 
 ---
 
-## 📂 File Structure
 
-DataProject/
-├── app.py             # The core Streamlit web interface, where user interaction happens.
-├── utils.py           # Contains all the backend logic for data processing, cleaning, and chart generation.
-├── charts/            # Directory to store auto-generated chart images before they are embedded into reports.
-├── reports/           # Location where exported PDF analysis reports are saved.
-├── datasets/          # (Optional) A dedicated folder for storing your test datasets for quick access.
-└── requirements.txt   # Lists all the Python dependencies required to run the application successfully.
-
----
 
 ## 🛠️ How to Run
 
